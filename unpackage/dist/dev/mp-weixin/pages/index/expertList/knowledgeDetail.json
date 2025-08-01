@@ -1,0 +1,8 @@
+{
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "up-modal": "../../../node-modules/uview-plus/components/u-modal/u-modal",
+    "nav-bar": "../../../component/navBar",
+    "emtpy-state": "../../../component/emtpyState"
+  }
+}

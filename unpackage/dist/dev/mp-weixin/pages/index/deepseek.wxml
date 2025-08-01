@@ -1,0 +1,1 @@
+<view class="{{[virtualHostClass]}}" style="{{virtualHostStyle}}" hidden="{{virtualHostHidden || false}}" id="{{e}}"><input placeholder="请输入你的问题..." value="{{a}}" bindinput="{{b}}"/><button bindtap="{{c}}">大模型问答</button><view><text wx:for="{{d}}" wx:for-item="msg" wx:key="b">{{msg.a}}</text></view></view>

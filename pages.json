@@ -1,0 +1,191 @@
+{
+	"easycom": {
+		"autoscan": true,
+		"custom": {
+			"^up-(.*)": "uview-plus/components/u-$1/u-$1.vue",
+			"^u-(.*)": "uview-plus/components/u-$1/u-$1.vue"
+		}
+	},
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+	    {
+	    	"path" : "pages/login/login",
+	    	"style": {
+	    		"navigationStyle": "custom"
+	    	}
+	    },
+		{
+			"path": "pages/index/index",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path" : "pages/post/post",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path" : "pages/message/message",
+			"style" : 
+			{
+				"navigationBarTitleText" : ""
+			}
+		},
+		{
+			"path" : "pages/mine/mine",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path" : "pages/index/banner/Variety",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path" : "pages/index/banner/diseases",
+			"style" : 
+			{
+				"navigationBarTitleText" : "病虫害"
+			}
+		},
+		{
+			"path" : "pages/index/banner/VarietyDetail",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path" : "component/navBar",
+			"style" : 
+			{
+				"navigationBarTitleText" : ""
+			}
+		},
+		{
+			"path" : "pages/post/postDetail",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path" : "pages/index/expertList/expertDetail",
+			"style": {
+				"navigationStyle": "custom",
+				"backgroundColor": "#f0ad4e"
+			}
+		},
+		{
+			"path" : "pages/index/expertList/addQuestion",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path" : "pages/index/expertList/knowledgeDetail",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+	
+		{
+			"path" : "pages/login/reg",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path" : "pages/mine/expert/expertContain",
+			"style" : 
+			{
+				"navigationBarTitleText" : ""
+			}
+		},
+		{
+			"path" : "pages/mine/expert/expertGetQuestion",
+			"style" : 
+			{
+				"navigationBarTitleText" : ""
+			}
+		},
+		{
+			"path" : "pages/mine/expert/expertKnowlege",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path" : "pages/mine/expert/addKnowledge",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path" : "pages/mine/userinfo",
+			"style" : 
+			{
+				"navigationBarTitleText" : ""
+			}
+		},
+		{
+			"path" : "pages/index/deepseek",
+			"style" : 
+			{
+				"navigationBarTitleText" : ""
+			}
+		},
+		{
+			"path" : "component/emtpyState",
+			"style" : 
+			{
+				"navigationBarTitleText" : ""
+			}
+		}
+	],
+	"tabBar": {
+		"list": [
+			{
+				"pagePath": "pages/index/index",
+				"text":"首页",
+				"iconPath": "/static/首页-copy (1).png",
+				"selectedIconPath": "/static/首页-copy.png"
+			},
+			{
+				"pagePath": "pages/post/post",
+				"text":"发帖",
+				"iconPath": "/static/询问 (1).png",
+				"selectedIconPath": "/static/询问.png"
+			},
+			{
+				"pagePath": "pages/message/message",
+				"text":"消息",
+				"iconPath": "/static/消息 (1).png",
+				"selectedIconPath": "/static/消息.png"
+			},
+			{
+				"pagePath": "pages/mine/mine",
+				"text":"我的",
+				"iconPath": "/static/我的 (3).png",
+				"selectedIconPath": "/static/我的 (2).png"
+			}
+		]
+	},
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "uni-app",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#f5f5f5"
+	},
+	"uniIdRouter": {},
+	"requiredPrivateInfos": [
+	"getLocation"
+	],
+	"permission": {
+	"scope.userLocation": {
+	"desc": "初始化时获取用户的位置信息用于外出打卡定位"
+	}
+	}
+	
+}

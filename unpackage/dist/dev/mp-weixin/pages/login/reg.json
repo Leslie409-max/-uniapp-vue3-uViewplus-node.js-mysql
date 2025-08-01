@@ -1,0 +1,9 @@
+{
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "up-input": "../../node-modules/uview-plus/components/u-input/u-input",
+    "up-form-item": "../../node-modules/uview-plus/components/u-form-item/u-form-item",
+    "up-form": "../../node-modules/uview-plus/components/u-form/u-form",
+    "nav-bar": "../../component/navBar"
+  }
+}

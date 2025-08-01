@@ -1,0 +1,15 @@
+
+.app.data-v-1a6b73ac{
+		width:100vw;
+		height: 100vh;
+		background-color: #f5f5f5;
+}
+.border.data-v-1a6b73ac{
+		margin:0  10px;
+		padding: 10px;
+		border-radius: 25px;
+		background-color: white;
+		margin-bottom: 20px;
+}
+.title.data-v-1a6b73ac{
+}

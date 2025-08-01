@@ -1,0 +1,1 @@
+{"version":3,"file":"emtpyState.js","sources":["../../HbuliderX/HBuilderX/plugins/uniapp-cli-vite/uniPage:/Y29tcG9uZW50L2VtdHB5U3RhdGUudnVl"],"sourcesContent":["import MiniProgramPage from 'D:/HbuliderXlocalSave/Blueberry/component/emtpyState.vue'\nwx.createPage(MiniProgramPage)"],"names":["MiniProgramPage"],"mappings":";;AACA,GAAG,WAAWA,WAAe,eAAA;"}
