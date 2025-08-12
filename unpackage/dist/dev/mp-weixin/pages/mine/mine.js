@@ -44,7 +44,7 @@ const _sfc_main = {
     };
     const removeToken = userStore.removeToken();
     return (_ctx, _cache) => {
-      var _a, _b;
+      var _a, _b, _c, _d;
       return common_vendor.e({
         a: common_vendor.unref(userStore).token
       }, common_vendor.unref(userStore).token ? common_vendor.e({
@@ -70,10 +70,19 @@ const _sfc_main = {
         m: common_vendor.o(toContain),
         n: common_assets._imports_2$1,
         o: common_vendor.o(toQuestion),
-        p: common_assets._imports_3$1,
+        p: common_assets._imports_3,
         q: common_vendor.o(toKnowledge)
       } : {}, {
-        r: common_vendor.o((...args) => common_vendor.unref(removeToken) && common_vendor.unref(removeToken)(...args))
+        r: ((_c = common_vendor.unref(userStore)) == null ? void 0 : _c.role) == 0
+      }, ((_d = common_vendor.unref(userStore)) == null ? void 0 : _d.role) == 0 ? {
+        s: common_assets._imports_4,
+        t: common_vendor.o((...args) => _ctx.tomypost && _ctx.tomypost(...args)),
+        v: common_assets._imports_5,
+        w: common_vendor.o((...args) => _ctx.tomyQuestion && _ctx.tomyQuestion(...args)),
+        x: common_assets._imports_3,
+        y: common_vendor.o(toKnowledge)
+      } : {}, {
+        z: common_vendor.o((...args) => common_vendor.unref(removeToken) && common_vendor.unref(removeToken)(...args))
       });
     };
   }

@@ -54,33 +54,27 @@ const _sfc_main = {
         });
       });
       for (let i = 0; i < lists.length; i++) {
-        const result = await uploadFilePromise(lists[i].url);
-        let item = fileList1.value[fileListLen];
-        fileList1.value.splice(fileListLen, 1, {
-          ...item,
-          status: "success",
-          message: "",
-          url: result
-        });
-        fileListLen++;
+        try {
+          const result = await uploadFilePromise(lists[i].url);
+          let item = fileList1.value[fileListLen];
+          fileList1.value.splice(fileListLen, 1, {
+            ...item,
+            status: "success",
+            message: "",
+            url: result
+          });
+          expertForm.value.avatar = result;
+          fileListLen++;
+        } catch (error) {
+          fileList1.value.splice(fileListLen, 1);
+          common_vendor.index.__f__("error", "at pages/mine/expert/expertContain.vue:198", "图片上传失败:", error);
+        }
       }
     };
     const uploadFilePromise = (url) => {
       return new Promise((resolve, reject) => {
-        common_vendor.index.uploadFile({
-          url: "http://192.168.2.21:7001/upload",
-          // 仅为示例，非真实的接口地址
-          filePath: url,
-          name: "file",
-          formData: {
-            user: "test"
-          },
-          success: (res) => {
-            setTimeout(() => {
-              resolve(res.data.data);
-            }, 1e3);
-          }
-        });
+        common_vendor.index.__f__("log", "at pages/mine/expert/expertContain.vue:236", "使用本地文件URL:", url);
+        resolve(url);
       });
     };
     const addExpert = () => {
@@ -89,7 +83,7 @@ const _sfc_main = {
         method: "POST",
         data: expertForm.value,
         success(res) {
-          common_vendor.index.__f__("log", "at pages/mine/expert/expertContain.vue:220", res.data);
+          common_vendor.index.__f__("log", "at pages/mine/expert/expertContain.vue:247", res.data);
           common_vendor.index.showToast({
             title: "认证成功，正在跳转首页...",
             duration: 2e3
@@ -101,7 +95,7 @@ const _sfc_main = {
           }, 1e3);
         },
         fail(err) {
-          common_vendor.index.__f__("log", "at pages/mine/expert/expertContain.vue:233", err);
+          common_vendor.index.__f__("log", "at pages/mine/expert/expertContain.vue:260", err);
         }
       });
     };

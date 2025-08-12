@@ -1,9 +1,15 @@
 <template>
-	<NavBar></NavBar>
+	<NavBar :name="true"></NavBar>
 	
 	<view class="app">
 	<view class="banner">
-		<image class="banner__image" src="/static/banner.png" mode="widthFix"  @click="todeepseek"></image>
+		<up-swiper
+		    :list="list1"
+		    @change="change"
+			height="200"
+			radius="15"
+		></up-swiper>
+		<!-- <image class="banner__image" src="/static/banner.png" mode="widthFix"  @click="todeepseek"></image> -->
 	</view>
 	
 	<view class="functions">
@@ -19,7 +25,7 @@
 			<view><image class="functions__item-image"src="/static/播种.png" mode="widthFix"></image></view>
 			<view>栽培技巧</view>
 		</view>
-		<view class="functions__item">
+		<view class="functions__item" @click="todeepseek">
 			<view><image class="functions__item-image"src="/static/植物.png" mode="widthFix"></image></view>
 			<view>品种</view>
 		</view>
@@ -65,8 +71,15 @@
 <script setup>
 	import NavBar from '../../component/navBar.vue';
 	import Title from '@/component/title.vue'
-	import { ref,onMounted } from 'vue';
+	import { ref,onMounted,reactive } from 'vue';
 	import { getExpertAPI } from '../../api/api';
+	
+// 使用 reactive 创建响应式数组  
+const list1 = reactive([  
+    '/static/banner1 (1).jpg',  
+    '/static/banner1 (2).jpg',
+	'/static/deepseek.jpg'
+]);  
 
 //跳转到品种页
 const toVariety = () =>{
@@ -154,10 +167,6 @@ const markers = ref([
 	.banner{
 		margin:0 10px;
 		padding: 10px 0 ;
-	}
-	.banner__image{
-		width: 100%;
-		border-radius: 25px;
 	}
 	.functions{
 		display: flex;

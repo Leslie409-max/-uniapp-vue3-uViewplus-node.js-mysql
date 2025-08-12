@@ -5,7 +5,7 @@ const _sfc_main = {
   data() {
     return {};
   },
-  mixins: [common_vendor.mpMixin, common_vendor.mixin, common_vendor.props$12],
+  mixins: [common_vendor.mpMixin, common_vendor.mixin, common_vendor.props$13],
   computed: {
     titleTextStyle() {
       return common_vendor.addStyle(this.titleStyle);

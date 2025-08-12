@@ -3,7 +3,7 @@
 	<view class="app">
 		<view class="knowledgeDetail">
 			<view class="comment__user">
-				<image :src="knowledgeDetail[0].avatar" style="width: 50px;height: 50px;"></image>
+				<image :src="knowledgeDetail[0].avatar" style="width: 50px;height: 50px;" @click="toexpertDetail(knowledgeDetail[0].expert_id)"></image>
 				<view class="comment__user-1">
 				   <view class="expertName">{{knowledgeDetail[0].expertName}}</view>
 				   <view style="display:flex;gap:5px;">
@@ -27,9 +27,13 @@
 			<view class="knowledgeDetail__content">
 				{{knowledgeDetail[0].content}}
 			</view>
+			<!-- 新增：图片展示区域 -->
+			<view v-if="knowledgeDetail[0].picture" class="knowledgeDetail__content">
+				<image :src="knowledgeDetail[0].picture"></image>
+			</view>
 		</view>
 		
-		<block v-if="userStore?.role == 1">
+		<block v-if="userStore?.role == 1 && userStore?.userInfo?.expert_id == knowledgeDetail[0]?.expert_id">
 			<view style="display: flex;gap:10px;right: 20px;position: absolute;margin:10px;">
 				<image src="/static/删 除 .png" mode="widthFix" style="width:20px;" @click="delContainShow = true"></image>
 				<image src="/static/编辑.png" mode="widthFix" style="width:20px;" @click="toupdate"></image>
@@ -49,7 +53,7 @@
 				</view>
 				<view class="hr"></view>
 			</view>
-			<EmtpyState :show='knowComment.length <= 2' title="没有更多评论啦">{{title}}</EmtpyState>
+			<EmtpyState :show='knowComment.length > 0 && knowComment.length <= 2' title="没有更多评论啦">{{title}}</EmtpyState>
 			<EmtpyState :show='knowComment.length <= 0' title="暂无评论">{{title}}</EmtpyState>
 		</view>
 		
@@ -82,7 +86,7 @@
 <script setup>
 	import NavBar from '@/component/navBar.vue';
 	import {onLoad} from '@dcloudio/uni-app'
-	import {ref,reactive} from 'vue'
+	import {ref,reactive, computed} from 'vue'
 	import { userUserStore } from '../../../store/userStore';
 	import { useknowledgeStore } from '../../../store/knowledge';
 	import {getLastTimeStr} from '@/utils/time.js'
@@ -197,6 +201,27 @@
 			url:`/pages/mine/expert/addKnowledge?mode=edit`
 		})
 	}
+	
+	const toexpertDetail = (id) =>{
+		uni.navigateTo({
+			url:`/pages/index/expertList/expertDetail?id=${id}`
+		})
+	}
+	
+
+	const pictureList = computed(() => {
+		return knowledgeDetail.value && knowledgeDetail.value[0] && knowledgeDetail.value[0].picture
+			? knowledgeDetail.value[0].picture.split(',').filter(Boolean)
+			: [];
+	});
+
+	function previewImage(idx) {
+		// 预览大图，支持多图切换
+		uni.previewImage({
+			urls: pictureList.value,
+			current: pictureList.value[idx]
+		});
+	}
 </script>
 
 <style scoped lang="scss">
@@ -309,5 +334,11 @@
 	.input__input-0{
 		height: 25px;
 		background-color: white;
+	}
+	.img-list {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 10px;
+		margin: 10px 0 0 0;
 	}
 </style>

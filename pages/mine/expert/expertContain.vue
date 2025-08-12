@@ -7,7 +7,6 @@
 	    		ref="form1"
 				labelAlign="left"
 	    >
-		
 		    <up-form-item
 		    		label="头像:"
 		    		prop="avatar"
@@ -181,33 +180,61 @@
 	    });
 	  });
 	  for (let i = 0; i < lists.length; i++) {
-	    const result = await uploadFilePromise(lists[i].url);
-	    let item = fileList1.value[fileListLen];
-	    fileList1.value.splice(fileListLen, 1, {
-	      ...item,
-	      status: 'success',
-	      message: '',
-	      url: result,
-	    });
-	    fileListLen++;
+	    try {
+	      const result = await uploadFilePromise(lists[i].url);
+	      let item = fileList1.value[fileListLen];
+	      fileList1.value.splice(fileListLen, 1, {
+	        ...item,
+	        status: 'success',
+	        message: '',
+	        url: result,
+	      });
+	      // 将上传成功的图片URL保存到表单
+	      expertForm.value.avatar = result;
+	      fileListLen++;
+	    } catch (error) {
+	      // 上传失败，移除该文件
+	      fileList1.value.splice(fileListLen, 1);
+	      console.error('图片上传失败:', error);
+	    }
 	  }
 	};
 	
 	const uploadFilePromise = (url) => {
 	  return new Promise((resolve, reject) => {
-	    let a = uni.uploadFile({
-	      url: 'http://192.168.2.21:7001/upload', // 仅为示例，非真实的接口地址
+	    // 临时方案：直接使用本地文件URL，不上传到服务器
+	    // 如果你有后端上传接口，请取消注释下面的代码
+	    /*
+	    uni.uploadFile({
+	      url: 'http://127.0.0.1:3006/upload', // 修改为你的后端上传接口
 	      filePath: url,
 	      name: 'file',
 	      formData: {
 	        user: 'test',
 	      },
 	      success: (res) => {
-	        setTimeout(() => {
-	          resolve(res.data.data);
-	        }, 1000);
+	        console.log('上传成功:', res);
+	        try {
+	          const data = JSON.parse(res.data);
+	          resolve(data.data || data.url || res.data);
+	        } catch (e) {
+	          resolve(res.data);
+	        }
 	      },
+	      fail: (err) => {
+	        console.error('上传失败:', err);
+	        uni.showToast({
+	          title: '图片上传失败',
+	          icon: 'error'
+	        });
+	        reject(err);
+	      }
 	    });
+	    */
+	    
+	    // 临时方案：直接返回本地文件URL
+	    console.log('使用本地文件URL:', url);
+	    resolve(url);
 	  });
 	};
 	

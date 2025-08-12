@@ -3,7 +3,7 @@ const common_vendor = require("../../../../common/vendor.js");
 const _sfc_main = {
   name: "u-action-sheet",
   // 一些props参数和methods方法，通过mixin混入，因为其他文件也会用到
-  mixins: [common_vendor.openType, common_vendor.buttonMixin, common_vendor.mixin, common_vendor.props$10],
+  mixins: [common_vendor.openType, common_vendor.buttonMixin, common_vendor.mixin, common_vendor.props$12],
   data() {
     return {};
   },

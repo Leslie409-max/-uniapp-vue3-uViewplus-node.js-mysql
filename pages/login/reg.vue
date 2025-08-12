@@ -1,7 +1,6 @@
 <template>
 	<NavBar :showBack="true"></NavBar>
 	<view>
-		<view style="font-size: 16px;font-weight: 600; color:#666;margin-left:10px; text-align: center;" >庄河蓝莓技术平台服务</view>
 		<View class="role">
 			<view
 				@click="selectRole(0)"
@@ -9,7 +8,7 @@
 				:class="{ active: form.role === 0 }"
 			>
 				<image src="/static/农民.SVG (1).png" mode="widthFix" style="width:150px"></image>
-				<view class="role__item-text">我是农民</view>
+				<view class="role__item-text">我是普通用户</view>
 			</view>
 			<view
 				@click="selectRole(1)"
@@ -20,6 +19,7 @@
 				<view class="role__item-text">我是专家</view>
 			</view>
 		</View>
+		<view style="font-size: 16px;font-weight: 600; color:#666;text-align: center;">蓝莓e家亲</view>
 		<view class="reg">
 		<up-form
 				labelPosition="left"
@@ -55,7 +55,7 @@
 			</up-form-item>
 		</up-form>
 		
-		<button @click="reg">注册</button>
+		<button @click="reg" style="background-color: #5a6198;color:white;border-radius: 25px;">注册</button>
 		</view>
 	</view>
 </template>
@@ -121,7 +121,7 @@
 	
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 	.role{
 		display: flex;
 		justify-content: center;
@@ -135,17 +135,21 @@
 		width: 150px;
 		height: 175px;
 		border-radius: 25px;
-		background-color: antiquewhite;
+		background-color: white;
 		text-align: center;
 		transition: background 0.2s;
 	}
 	.role__item.active {
-	  background-color: #ffd700; /* 你想要的高亮色 */
+	  background-color: #5a6198; /* 你想要的高亮色 */
+	  .role__item-text{
+		  color:white;
+	  }
 	}
 	.role__item-text{
+		font-size: 12px;
 		position: absolute;
-		bottom:10px;
-		left:45px;
+		left:25%;
+		bottom: 0;
 		color: #666;
 	}
 	.role__item-image{

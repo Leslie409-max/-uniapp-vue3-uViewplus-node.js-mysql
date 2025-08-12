@@ -20,7 +20,9 @@
     "pages/mine/expert/addKnowledge",
     "pages/mine/userinfo",
     "pages/index/deepseek",
-    "component/emtpyState"
+    "component/emtpyState",
+    "pages/mine/user/mypost",
+    "pages/mine/user/myQuestion"
   ],
   "window": {
     "navigationBarTextStyle": "black",

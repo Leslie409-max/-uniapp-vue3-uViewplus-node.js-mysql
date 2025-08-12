@@ -15,13 +15,9 @@ const _sfc_main = {
       type: Boolean,
       default: false
     },
-    addKnowledge: {
-      type: Boolean,
-      default: false
-    },
-    title: {
+    name: {
       type: String,
-      default: "庄河蓝莓技术平台服务"
+      default: false
     }
   },
   setup(__props) {
@@ -40,11 +36,6 @@ const _sfc_main = {
     function goBack() {
       common_vendor.index.navigateBack();
     }
-    const toaddledge = () => {
-      common_vendor.index.navigateTo({
-        url: "/pages/mine/expert/addKnowledge"
-      });
-    };
     return (_ctx, _cache) => {
       return common_vendor.e({
         a: state.value + "px",
@@ -57,15 +48,9 @@ const _sfc_main = {
         }),
         d: common_vendor.o(goBack)
       } : {}, {
-        e: props.addKnowledge
-      }, props.addKnowledge ? {
-        f: common_vendor.o(toaddledge)
-      } : {}, {
-        g: props.title
-      }, props.title ? {
-        h: common_vendor.t(__props.title)
-      } : {}, {
-        i: navBarHeight.value + "px"
+        e: props.name
+      }, props.name ? {} : {}, {
+        f: navBarHeight.value + "px"
       });
     };
   }

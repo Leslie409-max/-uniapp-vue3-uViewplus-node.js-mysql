@@ -1,10 +1,16 @@
 <template>
-	<view>
-	  <input v-model="input" placeholder="请输入你的问题..." />
-	  <button @click="sendMessage">大模型问答</button>
-	  <view>
-	    <text v-for="(msg, idx) in messages" :key="idx">{{ msg }}</text>
-	  </view>
+	<view class="app">
+		<image src="/static/deepseek.jpg" mode="widthFix" style="text-align: center;margin:0 10px;width:95%;border-radius: 15px;"></image>
+	    <view class="question">
+			
+	      <input class="input" v-model="input" placeholder="请输入你的问题..." />
+	      <button class="btn" @click="sendMessage">大模型问答</button>
+		  
+	    </view>
+		
+		<view class="answer" v-if="messages">
+		  <text v-for="(msg, idx) in messages" :key="idx">{{ msg }}</text>
+		</view>
 	</view>
 </template>
 
@@ -12,7 +18,7 @@
 	import { ref } from 'vue'
 	
 	const input = ref('')
-	const messages = ref([])
+	const messages = ref('')
 	
 	async function sendMessage() {
 	  // 1. 组装 POST 数据
@@ -52,6 +58,30 @@
 	}
 </script>
 
-<style>
-	       
+<style scoped>
+	.app{
+		width:100vw;
+		height: 100vh;
+		background-color: #f5f5f5;
+	}
+	.question{
+		margin:0 10px;
+		background-color: white;
+		border-radius: 25px;
+		display: flex;
+		margin-bottom: 15px;
+	}
+	.input{
+		padding: 10px;
+	}
+	.btn{
+		background-color: #4cb5d4;
+		color:white;
+	}
+	.answer{
+		margin:0 10px;
+		background-color: white;
+		border-radius: 25px;
+		padding: 10px;
+	}
 </style>

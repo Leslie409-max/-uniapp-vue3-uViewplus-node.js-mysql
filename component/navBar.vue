@@ -5,15 +5,10 @@
 		<view class="nav" :style="{ height: navBarHeight + 'px'}">
 			<view class="flex">
 			   <view v-if="props.showBack" @click="goBack">
-			   	<up-icon name="arrow-left" color="#333" size="20"></up-icon>
-			   </view>
-			   <view v-if="props.addKnowledge" style="margin:10px;" @click="toaddledge">
-			   	<view>去发布</view>
+			   	  <up-icon name="arrow-left" color="#333" size="20"></up-icon>
 			   </view>
 			</view>
-			<!-- <view v-if="props.title" style="font-size: 16px;font-weight: 600; color:#666;position: absolute;left:30%;">
-				{{title}}
-			</view> -->
+			<view v-if="props.name" class="name">蓝莓e家亲</view>
 		</view>
 	</view>
 	
@@ -29,13 +24,9 @@
 	    type: Boolean,
 	    default: false
 	  },
-	  addKnowledge: {
-	    type: Boolean,
-	    default: false
-	  },
-	  title: {
+	  name: {
 	    type: String,
-	    default: '庄河蓝莓技术平台服务'
+	    default: false
 	  },
 	})
 	const state = ref()
@@ -64,7 +55,7 @@
 	.top{
 		width:100vw;
 		height: 100px;
-		background:linear-gradient(#8BC34A, #f5f5f5);
+		background:linear-gradient(#3d6b3c, #f5f5f5);
 		position: fixed;
 	}
 	.nav{
@@ -73,10 +64,11 @@
 		text-align: center;
 		width: 100vw;
 	}
-	.flex{
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		width: 100vw;
+	.name{
+		margin:10px;
+		font-weight: 600;
+		font-size: 20px;
+		color:white;
+		font-family: "Microsoft Yahei", "微软雅黑", "黑体", sans-serif;
 	}
 </style>

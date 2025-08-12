@@ -10,23 +10,23 @@ const _sfc_main = {
     const option = common_vendor.ref();
     common_vendor.onLoad((options) => {
       option.value = options.expert_id;
-      common_vendor.index.__f__("log", "at pages/mine/expert/expertGetQuestion.vue:47", "options.expert_id", options.expert_id);
+      common_vendor.index.__f__("log", "at pages/mine/expert/expertGetQuestion.vue:51", "options.expert_id", options.expert_id);
       getQuestion(options.expert_id);
     });
     const userStore = store_userStore.userUserStore();
     const userinfo = userStore.userInfo;
-    common_vendor.index.__f__("log", "at pages/mine/expert/expertGetQuestion.vue:53", userinfo.expert_id);
+    common_vendor.index.__f__("log", "at pages/mine/expert/expertGetQuestion.vue:57", userinfo.expert_id);
     const questionList = common_vendor.ref();
     const getQuestion = (id) => {
       common_vendor.index.request({
         url: `http://127.0.0.1:3006/question/getQuestion/${id}`,
         success(res) {
           var _a;
-          common_vendor.index.__f__("log", "at pages/mine/expert/expertGetQuestion.vue:61", res.data);
+          common_vendor.index.__f__("log", "at pages/mine/expert/expertGetQuestion.vue:65", res.data);
           questionList.value = (_a = res.data) == null ? void 0 : _a.data;
         },
         fail(err) {
-          common_vendor.index.__f__("log", "at pages/mine/expert/expertGetQuestion.vue:65", err);
+          common_vendor.index.__f__("log", "at pages/mine/expert/expertGetQuestion.vue:69", err);
         }
       });
     };
@@ -37,25 +37,28 @@ const _sfc_main = {
         }
       }
     });
-    const answer = common_vendor.ref("");
+    const answerShow = common_vendor.ref({});
+    const answer = common_vendor.ref({});
     const addAnswer = (id) => {
       common_vendor.index.request({
         url: `http://127.0.0.1:3006/question/addAnswer`,
         method: "POST",
         data: {
-          answer: answer.value,
+          answer: answer.value[id],
           id
         },
         success(res) {
-          common_vendor.index.__f__("log", "at pages/mine/expert/expertGetQuestion.vue:88", res.data);
+          common_vendor.index.__f__("log", "at pages/mine/expert/expertGetQuestion.vue:94", res.data);
+          answer.value = " ";
           common_vendor.index.showToast({
             title: "回答成功",
-            duration: 2e3
+            duration: 1e3
           });
+          answerShow[id] = false;
           getQuestion(userinfo.expert_id);
         },
         fail(err) {
-          common_vendor.index.__f__("log", "at pages/mine/expert/expertGetQuestion.vue:97", err);
+          common_vendor.index.__f__("log", "at pages/mine/expert/expertGetQuestion.vue:106", err);
         }
       });
     };
@@ -69,17 +72,20 @@ const _sfc_main = {
             c: common_vendor.t(item.answer)
           } : {}, {
             d: item.answer === null
-          }, item.answer === null ? {} : {}, {
-            e: common_vendor.o(($event) => addAnswer(item.id)),
-            f: common_vendor.t(formatDate(item.created_at)),
-            g: common_vendor.t(item.nickname),
-            h: item.avatar
+          }, item.answer === null ? {
+            e: common_vendor.o(($event) => answerShow.value[item.id] = true)
+          } : {}, {
+            f: answer.value[item.id],
+            g: common_vendor.o(($event) => answer.value[item.id] = $event.detail.value),
+            h: common_vendor.o(($event) => addAnswer(item.id)),
+            i: answerShow.value[item.id],
+            j: common_vendor.t(formatDate(item.created_at)),
+            k: common_vendor.t(item.nickname),
+            l: item.avatar
           });
         }),
-        b: answer.value,
-        c: common_vendor.o(($event) => answer.value = $event.detail.value),
-        d: common_vendor.o((...args) => _ctx.topostDeatil && _ctx.topostDeatil(...args)),
-        e: common_vendor.gei(_ctx, "")
+        b: common_vendor.o((...args) => _ctx.topostDeatil && _ctx.topostDeatil(...args)),
+        c: common_vendor.gei(_ctx, "")
       };
     };
   }

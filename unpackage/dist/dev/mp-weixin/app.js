@@ -23,6 +23,8 @@ if (!Math) {
   "./pages/mine/userinfo.js";
   "./pages/index/deepseek.js";
   "./component/emtpyState.js";
+  "./pages/mine/user/mypost.js";
+  "./pages/mine/user/myQuestion.js";
 }
 const _sfc_main = {
   onLaunch: function() {

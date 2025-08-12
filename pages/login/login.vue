@@ -3,7 +3,7 @@
 	<view class="app">
 		<view style="text-align: center;">
 			<image src="/static/蓝莓.png" mode="widthFix" style="width: 150px;margin:0 auto;"></image>
-			<view style="font-size: 16px;font-weight: 600; color:#666;margin-left:10px;"></view>
+			<view style="font-size: 16px;font-weight: 600; color:#666;">蓝莓e家亲</view>
 			</view>
 		<view style="margin:10px;">
 		<up-form
@@ -41,7 +41,7 @@
 	    	</up-form-item>
 		</up-form>
 		
-		<button @click="login">登录</button>
+		<button @click="login" style="background-color: #5a6198;color:white;border-radius: 25px;">登录</button>
 		<view @click="toreg">
 			还未登录，<span style="color:blue;">去注册</span></view>
 		</view>

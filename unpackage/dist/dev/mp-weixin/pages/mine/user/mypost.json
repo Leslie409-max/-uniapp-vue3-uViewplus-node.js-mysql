@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "",
+  "usingComponents": {
+    "up-tabs": "../../../node-modules/uview-plus/components/u-tabs/u-tabs",
+    "nav-bar": "../../../component/navBar",
+    "emtpy-state": "../../../component/emtpyState"
+  }
+}

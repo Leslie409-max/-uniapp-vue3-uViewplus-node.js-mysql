@@ -1,6 +1,7 @@
 {
   "navigationStyle": "custom",
   "usingComponents": {
+    "up-swiper": "../../node-modules/uview-plus/components/u-swiper/u-swiper",
     "nav-bar": "../../component/navBar",
     "title": "../../component/title"
   }

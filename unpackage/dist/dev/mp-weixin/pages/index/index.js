@@ -1,14 +1,24 @@
 "use strict";
 const common_vendor = require("../../common/vendor.js");
 const common_assets = require("../../common/assets.js");
+if (!Array) {
+  const _easycom_up_swiper2 = common_vendor.resolveComponent("up-swiper");
+  _easycom_up_swiper2();
+}
+const _easycom_up_swiper = () => "../../node-modules/uview-plus/components/u-swiper/u-swiper.js";
 if (!Math) {
-  (NavBar + Title)();
+  (NavBar + _easycom_up_swiper + Title)();
 }
 const NavBar = () => "../../component/navBar2.js";
 const Title = () => "../../component/title.js";
 const _sfc_main = {
   __name: "index",
   setup(__props) {
+    const list1 = common_vendor.reactive([
+      "/static/banner1 (1).jpg",
+      "/static/banner1 (2).jpg",
+      "/static/deepseek.jpg"
+    ]);
     const toVariety = () => {
       common_vendor.index.navigateTo({
         url: "/pages/index/banner/Variety"
@@ -29,11 +39,11 @@ const _sfc_main = {
       common_vendor.index.request({
         url: "http://127.0.0.1:3006/expert/getExpert",
         success(res) {
-          common_vendor.index.__f__("log", "at pages/index/index.vue:95", res);
+          common_vendor.index.__f__("log", "at pages/index/index.vue:108", res);
           expertlist.value = res.data.data;
         },
         fail(err) {
-          common_vendor.index.__f__("log", "at pages/index/index.vue:99", err);
+          common_vendor.index.__f__("log", "at pages/index/index.vue:112", err);
         }
       });
     };
@@ -78,13 +88,13 @@ const _sfc_main = {
       common_vendor.index.getLocation({
         type: "wgs84",
         success: function(res) {
-          common_vendor.index.__f__("log", "at pages/index/index.vue:130", "当前位置的经度：" + res.longitude);
-          common_vendor.index.__f__("log", "at pages/index/index.vue:131", "当前位置的纬度：" + res.latitude);
+          common_vendor.index.__f__("log", "at pages/index/index.vue:143", "当前位置的经度：" + res.longitude);
+          common_vendor.index.__f__("log", "at pages/index/index.vue:144", "当前位置的纬度：" + res.latitude);
           longitude.value = res.longitude;
           latitude.value = res.latitude;
         },
         fail: function(err) {
-          common_vendor.index.__f__("log", "at pages/index/index.vue:136", err);
+          common_vendor.index.__f__("log", "at pages/index/index.vue:149", err);
         }
       });
     };
@@ -94,21 +104,29 @@ const _sfc_main = {
     });
     return (_ctx, _cache) => {
       return {
-        a: common_assets._imports_0$1,
-        b: common_vendor.o(todeepseek),
-        c: common_assets._imports_1,
-        d: common_vendor.o(toVariety),
-        e: common_assets._imports_2,
-        f: common_assets._imports_3,
-        g: common_assets._imports_1,
-        h: latitude.value,
-        i: longitude.value,
-        j: markers.value,
-        k: common_vendor.o(_ctx.goToMore),
-        l: common_vendor.p({
+        a: common_vendor.p({
+          name: true
+        }),
+        b: common_vendor.o(_ctx.change),
+        c: common_vendor.p({
+          list: list1,
+          height: "200",
+          radius: "15"
+        }),
+        d: common_assets._imports_0$1,
+        e: common_vendor.o(toVariety),
+        f: common_assets._imports_1,
+        g: common_assets._imports_2,
+        h: common_assets._imports_0$1,
+        i: common_vendor.o(todeepseek),
+        j: latitude.value,
+        k: longitude.value,
+        l: markers.value,
+        m: common_vendor.o(_ctx.goToMore),
+        n: common_vendor.p({
           title: "询问专家"
         }),
-        m: common_vendor.f(expertlist.value, (item, k0, i0) => {
+        o: common_vendor.f(expertlist.value, (item, k0, i0) => {
           return {
             a: item.avatar,
             b: common_vendor.t(item.expertName),

@@ -1,6 +1,7 @@
 {
   "navigationStyle": "custom",
   "usingComponents": {
+    "up-upload": "../../../node-modules/uview-plus/components/u-upload/u-upload",
     "nav-bar": "../../../component/navBar"
   }
 }

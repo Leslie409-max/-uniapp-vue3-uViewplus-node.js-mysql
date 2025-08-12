@@ -22,23 +22,40 @@
 		<view><up-icon name="arrow-right" @click="toUserinfo"></up-icon></view>
 	</view>
 	
+	<block v-if="userStore?.role == 1">
+		<view class="banner border">
+		    <view class="banner__item" @click="toContain">
+		    	<image src="/static/认证.png" mode="widthFix" style="width: 50px;"></image>
+		    	<view>专家认证</view>
+		    </view>
+		    <view class="banner__item" @click="toQuestion">
+		    	<image src="/static/收件.png" mode="widthFix" style="width: 50px;"></image>
+		    	<view>收到提问</view>
+		    </view>
+		    <view class="banner__item" @click="toKnowledge">
+		    	<image src="/static/文章管理.png" mode="widthFix" style="width: 50px;"></image>
+		    	<view>发布管理</view>
+		    </view>
+		</view>
+	</block>
 	
-	<view class="banner border">
-		<block v-if="userStore?.role == 1">
-			<view class="banner__item" @click="toContain">
-				<image src="/static/认证.png" mode="widthFix" style="width: 50px;"></image>
-				<view>专家认证</view>
-			</view>
-			<view class="banner__item" @click="toQuestion">
-				<image src="/static/收件.png" mode="widthFix" style="width: 50px;"></image>
-				<view>收到提问</view>
-			</view>
-			<view class="banner__item" @click="toKnowledge">
-				<image src="/static/文章管理.png" mode="widthFix" style="width: 50px;"></image>
-				<view>发布管理</view>
-			</view>
-		</block>
-	</view>
+	<block v-if="userStore?.role == 0">
+		<view class="banner border">
+		    <view class="banner__item" @click="tomypost">
+		    	<image src="/static/我的贴子.png" mode="widthFix" style="width: 50px;"></image>
+		    	<view>我的贴子</view>
+		    </view>
+		    <view class="banner__item" @click="tomyQuestion">
+		    	<image src="/static/提问.png" mode="widthFix" style="width: 50px;"></image>
+		    	<view>我的提问</view>
+		    </view>
+		    <view class="banner__item" @click="toKnowledge">
+		    	<image src="/static/文章管理.png" mode="widthFix" style="width: 50px;"></image>
+		    	<view>发布管理</view>
+		    </view>
+		</view>
+	</block>
+	
 	<button @click="removeToken">退出登录</button>
 	</view>
 </template>
