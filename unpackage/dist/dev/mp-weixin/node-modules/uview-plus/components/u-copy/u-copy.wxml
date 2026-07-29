@@ -1,1 +1,0 @@
-<view bindtap="{{a}}" class="{{[virtualHostClass]}}" style="{{virtualHostStyle}}" hidden="{{virtualHostHidden || false}}" id="{{b}}"><block wx:if="{{$slots.d}}"><slot></slot></block><block wx:else>复制</block></view>

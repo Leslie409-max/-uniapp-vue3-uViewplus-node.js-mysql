@@ -42,7 +42,7 @@
 		</up-form>
 		
 		<button @click="login" style="background-color: #5a6198;color:white;border-radius: 25px;">登录</button>
-		<view @click="toreg">
+		<view @click="toreg"  style="text-align: center;margin-top: 10px;font-size: 12px;color:#666;">
 			还未登录，<span style="color:blue;">去注册</span></view>
 		</view>
 		
@@ -116,7 +116,7 @@
 <style scoped>
 	.app{
 		width:100vw;
-		height: 100vh;
+		min-height: 100vh;
 		background-color: #f5f5f5;
 	}
 	       

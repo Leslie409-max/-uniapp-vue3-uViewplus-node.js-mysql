@@ -1,4 +1,4 @@
-import "./chunk-Y2F7D3TJ.js";
+import "./chunk-TYRVL62N.js";
 
 // ../../../../HbuliderXlocalSave/Blueberry/node_modules/uview-plus/libs/vue.js
 var defineMixin = (options) => {

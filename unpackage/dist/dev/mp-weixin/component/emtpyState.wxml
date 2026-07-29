@@ -1,1 +1,0 @@
-<block wx:if="{{a}}"><view class="empty data-v-ec72155d"><image class="data-v-ec72155d" src="{{b}}" mode="widthFix"></image><view class="data-v-ec72155d" style="color:#999">{{c}}</view></view></block>

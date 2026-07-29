@@ -1,7 +1,0 @@
-{
-  "navigationBarTitleText": "",
-  "usingComponents": {
-    "up-cell": "../../node-modules/uview-plus/components/u-cell/u-cell",
-    "up-cell-group": "../../node-modules/uview-plus/components/u-cell-group/u-cell-group"
-  }
-}

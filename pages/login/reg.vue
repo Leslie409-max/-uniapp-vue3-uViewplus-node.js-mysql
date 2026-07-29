@@ -56,6 +56,9 @@
 		</up-form>
 		
 		<button @click="reg" style="background-color: #5a6198;color:white;border-radius: 25px;">注册</button>
+		 <view @click="toMain" style="text-align: center;margin-top: 10px;font-size: 12px;color:#666;">
+			不注册，以<span style="color:greenyellow;">游客</span>身份进入
+		 </view>
 		</view>
 	</view>
 </template>
@@ -116,6 +119,12 @@
 			fail(err){
 				console.log(err)
 			}
+		})
+	}
+	
+	const toMain = () =>{
+		uni.switchTab({
+			url:'/pages/index/index'
 		})
 	}
 	

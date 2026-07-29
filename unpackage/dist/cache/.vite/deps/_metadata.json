@@ -1,46 +1,52 @@
 {
-  "hash": "00381219",
-  "configHash": "b7e4bc1d",
-  "lockfileHash": "04f70a5a",
-  "browserHash": "2125c4c9",
+  "hash": "ccb335a2",
+  "configHash": "45077159",
+  "lockfileHash": "6c0c9665",
+  "browserHash": "8e16a7d0",
   "optimized": {
-    "uview-plus": {
-      "src": "../../../../../node_modules/uview-plus/index.js",
-      "file": "uview-plus.js",
-      "fileHash": "e0ff4d33",
-      "needsInterop": false
+    "dayjs": {
+      "src": "../../../../../node_modules/dayjs/dayjs.min.js",
+      "file": "dayjs.js",
+      "fileHash": "31d72434",
+      "needsInterop": true
     },
     "pinia-plugin-persistedstate": {
       "src": "../../../../../node_modules/pinia-plugin-persistedstate/dist/index.js",
       "file": "pinia-plugin-persistedstate.js",
-      "fileHash": "5cd38309",
+      "fileHash": "3817dbb9",
       "needsInterop": false
     },
-    "dayjs": {
-      "src": "../../../../../node_modules/dayjs/dayjs.min.js",
-      "file": "dayjs.js",
-      "fileHash": "1d86638f",
-      "needsInterop": true
+    "uview-plus": {
+      "src": "../../../../../node_modules/uview-plus/index.js",
+      "file": "uview-plus.js",
+      "fileHash": "b9e65068",
+      "needsInterop": false
     },
     "dayjs/locale/zh-cn": {
       "src": "../../../../../node_modules/dayjs/locale/zh-cn.js",
       "file": "dayjs_locale_zh-cn.js",
-      "fileHash": "0f91a897",
+      "fileHash": "89c35817",
       "needsInterop": true
     },
     "dayjs/plugin/relativeTime": {
       "src": "../../../../../node_modules/dayjs/plugin/relativeTime.js",
       "file": "dayjs_plugin_relativeTime.js",
-      "fileHash": "d14c005b",
+      "fileHash": "26d78d5d",
       "needsInterop": true
+    },
+    "marked": {
+      "src": "../../../../../node_modules/marked/lib/marked.esm.js",
+      "file": "marked.js",
+      "fileHash": "39bcf932",
+      "needsInterop": false
     }
   },
   "chunks": {
-    "chunk-5PUKTQSK": {
-      "file": "chunk-5PUKTQSK.js"
+    "chunk-PFPZRBVT": {
+      "file": "chunk-PFPZRBVT.js"
     },
-    "chunk-Y2F7D3TJ": {
-      "file": "chunk-Y2F7D3TJ.js"
+    "chunk-TYRVL62N": {
+      "file": "chunk-TYRVL62N.js"
     }
   }
 }

@@ -16,6 +16,7 @@
 
 <script setup>
 	import { ref } from 'vue'
+	import { marked } from 'marked'
 	
 	const input = ref('')
 	const messages = ref('')
@@ -61,7 +62,7 @@
 <style scoped>
 	.app{
 		width:100vw;
-		height: 100vh;
+		min-height: 100vh;
 		background-color: #f5f5f5;
 	}
 	.question{

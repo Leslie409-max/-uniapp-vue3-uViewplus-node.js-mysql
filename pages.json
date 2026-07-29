@@ -27,9 +27,14 @@
 		},
 		{
 			"path" : "pages/message/message",
-			"style" : 
-			{
-				"navigationBarTitleText" : ""
+		"style": {
+			"navigationStyle": "custom"
+		}
+		},
+		{
+			"path" : "pages/message/sellerDetail",
+			"style": {
+				"navigationStyle": "custom"
 			}
 		},
 		{
@@ -48,11 +53,29 @@
 			"path" : "pages/index/banner/diseases",
 			"style" : 
 			{
-				"navigationBarTitleText" : "病虫害"
+				"navigationStyle": "custom"
 			}
 		},
 		{
 			"path" : "pages/index/banner/VarietyDetail",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path" : "pages/index/banner/diseaseDetail",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path" : "pages/index/banner/techniques",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path" : "pages/index/banner/techniquesDetail",
 			"style": {
 				"navigationStyle": "custom"
 			}
@@ -105,9 +128,8 @@
 		},
 		{
 			"path" : "pages/mine/expert/expertGetQuestion",
-			"style" : 
-			{
-				"navigationBarTitleText" : ""
+			"style": {
+				"navigationStyle": "custom"
 			}
 		},
 		{
@@ -145,16 +167,50 @@
 		},
 		{
 			"path" : "pages/mine/user/mypost",
-			"style" : 
-			{
-				"navigationBarTitleText" : ""
+			"style": {
+				"navigationStyle": "custom"
 			}
 		},
 		{
 			"path" : "pages/mine/user/myQuestion",
-			"style" : 
-			{
-				"navigationBarTitleText" : ""
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path" : "pages/mine/user/myOrder",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/mine/user/myInfo",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/mine/user/editSeller",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/mine/user/addressList",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/mine/user/editAddress",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/weather/weatherDetail",
+			"style": {
+				"navigationStyle": "custom"
 			}
 		}
 	],
@@ -174,9 +230,9 @@
 			},
 			{
 				"pagePath": "pages/message/message",
-				"text":"消息",
-				"iconPath": "/static/消息 (1).png",
-				"selectedIconPath": "/static/消息.png"
+				"text":"市场",
+				"iconPath": "/static/购物车.png",
+				"selectedIconPath": "/static/购物车 (1).png"
 			},
 			{
 				"pagePath": "pages/mine/mine",

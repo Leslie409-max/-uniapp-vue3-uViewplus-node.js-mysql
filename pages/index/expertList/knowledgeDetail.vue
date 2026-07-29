@@ -1,86 +1,128 @@
 <template>
-	<NavBar :showBack="true"></NavBar>
-	<view class="app">
-		<view class="knowledgeDetail">
-			<view class="comment__user">
-				<image :src="knowledgeDetail[0].avatar" style="width: 50px;height: 50px;" @click="toexpertDetail(knowledgeDetail[0].expert_id)"></image>
-				<view class="comment__user-1">
-				   <view class="expertName">{{knowledgeDetail[0].expertName}}</view>
-				   <view style="display:flex;gap:5px;">
-					    <view class="knowledgeDetail__time">{{getLastTimeStr(knowledgeDetail[0].created_at, true)}}</view>
+	<NavBar :showBack="true" title="知识详情"></NavBar>
+	<view class="container">
+		<!-- 知识文章内容 -->
+		<view class="post-card">
+			<view class="user-info">
+				<view class="avatar" @click="toexpertDetail(knowledgeDetail[0].expert_id)">
+					<image :src="knowledgeDetail[0].avatar" mode="aspectFill"></image>
+				</view>
+				<view class="user-details">
+				   <view class="user-name">{{knowledgeDetail[0].expertName}}</view>
+				   <view class="post-meta">
+					    <view class="post-time">{{getLastTimeStr(knowledgeDetail[0].created_at, true)}}</view>
 						<block v-if="knowledgeDetail[0].type==='长文章'">
-							<view class="know__title-type green">{{knowledgeDetail[0].type}}</view>
+							<view class="post-type green">{{knowledgeDetail[0].type}}</view>
 						</block>
 						<block v-if="knowledgeDetail[0].type==='小知识'">
-							<view class="know__title-type yellow">{{knowledgeDetail[0].type}}</view>
+							<view class="post-type yellow">{{knowledgeDetail[0].type}}</view>
 						</block>
 				   </view>
 				</view>
 			</view>
 			
-			<view class="knowledge_titie">
-			    <view class="knowledgeDetail__title">
-			    	{{knowledgeDetail[0].title}}
-			    </view>
+			<view class="post-content">
+				<view class="post-title">{{knowledgeDetail[0].title}}</view>
+				<view class="divider"></view>
+				<view class="post-body">{{knowledgeDetail[0].content}}</view>
+				
+				<!-- 图片展示区域 -->
+				<view v-if="knowledgeDetail[0].picture" class="post-image">
+					<image :src="knowledgeDetail[0].picture" mode="aspectFill"></image>
+				</view>
 			</view>
-			<view class="divider"></view>
-			<view class="knowledgeDetail__content">
-				{{knowledgeDetail[0].content}}
-			</view>
-			<!-- 新增：图片展示区域 -->
-			<view v-if="knowledgeDetail[0].picture" class="knowledgeDetail__content">
-				<image :src="knowledgeDetail[0].picture"></image>
-			</view>
-		</view>
-		
-		<block v-if="userStore?.role == 1 && userStore?.userInfo?.expert_id == knowledgeDetail[0]?.expert_id">
-			<view style="display: flex;gap:10px;right: 20px;position: absolute;margin:10px;">
-				<image src="/static/删 除 .png" mode="widthFix" style="width:20px;" @click="delContainShow = true"></image>
-				<image src="/static/编辑.png" mode="widthFix" style="width:20px;" @click="toupdate"></image>
-			</view>
-		</block>
-		
-		<view class="title">评论</view>
-		<view class="comment">
-			<view v-for="item in knowComment">
-				<view class="comment__user">
-					<image :src="item.avatar" mode="widthFix"></image>
-					<view class="comment__user-1">
-					   <view class="comment__user-nickname">{{item.nickname}}</view>
-					   <view class="comment__user-content">{{item.content}}</view>
-					   <view class="comment__user-nickname">{{getLastTimeStr(item.created_time, true)}}</view>
+			
+			<view class="post-footer">
+				<view class="post-actions">
+					<view class="action-item">
+						<up-icon name="chat" size="16"></up-icon>
+						<text>{{knowComment?.length || 0}}</text>
+					</view>
+					<view class="action-item" @click="addLike">
+						<up-icon name="heart" size="16" :color="isLiked ? '#ff6b6b' : '#999'"></up-icon>
+						<text :style="{ color: isLiked ? '#ff6b6b' : '#999' }">{{ knowledgeDetail[0]?.likes || 0 }}</text>
 					</view>
 				</view>
-				<view class="hr"></view>
 			</view>
-			<EmtpyState :show='knowComment.length > 0 && knowComment.length <= 2' title="没有更多评论啦">{{title}}</EmtpyState>
-			<EmtpyState :show='knowComment.length <= 0' title="暂无评论">{{title}}</EmtpyState>
+			
+			<!-- 编辑和删除按钮 -->
+			<block v-if="userStore?.role == 1 && userStore?.userInfo?.expert_id == knowledgeDetail[0]?.expert_id">
+				<view class="edit-actions">
+					<image src="/static/删 除 .png" mode="widthFix" style="width:20px;" @click="delContainShow = true"></image>
+					<image src="/static/编辑.png" mode="widthFix" style="width:20px;" @click="toupdate"></image>
+				</view>
+			</block>
 		</view>
 		
-		<view style="height: 25px;"></view>
+		<!-- 评论区 -->
+		<view class="comments-section">
+			<view class="section-title">
+				<text>全部评论 ({{knowComment?.length || 0}})</text>
+			</view>
+			
+			<!-- 评论列表 -->
+			<view class="comment-item" v-for="item in knowComment" :key="item.id">
+				<!-- approved: 公开显示 -->
+				<block v-if="item.status === 'approved'">
+				<view class="comment-user">
+					<view class="avatar">
+						<image :src="item.avatar" mode="aspectFill"></image>
+					</view>
+					
+						<view class="comment-user-info">
+							<view class="comment-user-name">{{item.nickname}}</view>
+							<view class="comment-content">{{item.content}}</view>
+							<view class="comment-time">{{getLastTimeStr(item.created_time, true)}}</view>
+						</view>
+				</view>
+				</block>
+				<!-- pending: 仅登录用户可见，待审核样式 -->
+				<block v-if="item.status === 'pending' && item.user_id === userStore.userInfo.id">
+				<view class="comment-user pending">
+					<view class="avatar">
+						<image :src="item.avatar" mode="aspectFill"></image>
+					</view>
+					<view class="comment-user-info">
+						<view class="comment-header">
+							<view class="comment-user-name">{{item.nickname}}</view>
+							<view class="pending-tag">待审核</view>
+						</view>
+						<view class="comment-content">{{item.content}}</view>
+						<view class="comment-time">{{getLastTimeStr(item.created_time, true)}}</view>
+					</view>
+				</view>
+				</block>
+			</view>
+			
+			<EmtpyState :show='knowComment.length > 0 && knowComment.length <= 2' title="没有更多评论啦">{{title}}</EmtpyState>
+		</view>
 		
+		<!-- 评论输入框 -->
 		<block v-if="userStore?.role == 0">
-			<view class="input">
-				<image :src="knowComment[0].avatar" mode="widthFix" style="width: 25px;height: 25px;border-radius: 50%;"></image>
-				<view class="input__input-0">
-					<input class="input__input" v-model="form.content" placeholder="请输入评论..."/>
-				</view>	
-				<button @click="addComment" style="height: 25px;font-size: 12px;text-align: center;">发表评论</button>
+			<view class="comment-input-section">
+				<view class="comment-input">
+					<view class="avatar">
+						<image :src="knowComment[0]?.avatar || 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=user%20avatar%2C%20headshot&image_size=square'" mode="aspectFill"></image>
+					</view>
+					<input class="input-field" v-model="form.content" placeholder="请输入评论..."/>
+					<button class="send-btn" @click="addComment">发表</button>
+				</view>
 			</view>
 		</block>
 	</view>
-	    <view>
-			<up-modal 
-			:show="delContainShow" 
-			title="确认删除吗" 
-			content='如果你删除了该文章，文章以下的所有评论也将被删除'
-			showConfirmButton="true"
-			showCancelButton="true"
-			@confirm="delKnowledge(knowledgeDetail[0].id)"
-			@cancel="delContainShow = fasle"
-			>
-			</up-modal>
-		</view>
+	
+	<view>
+		<up-modal 
+		:show="delContainShow" 
+		title="确认删除吗" 
+		content='如果你删除了该文章，文章以下的所有评论也将被删除'
+		showConfirmButton="true"
+		showCancelButton="true"
+		@confirm="delKnowledge(knowledgeDetail[0].id)"
+		@cancel="delContainShow = false"
+		>
+		</up-modal>
+	</view>
 </template>
 
 <script setup>
@@ -145,6 +187,7 @@
 	
 	const addComment = () =>{
 		form.value.created_time = dayjs().format('YYYY-MM-DD HH:mm:ss')
+		form.value.status = 'pending'
 		uni.request({
 			url:`http://127.0.0.1:3006/know/addKnowComment`,
 			method:'POST',
@@ -222,123 +265,289 @@
 			current: pictureList.value[idx]
 		});
 	}
+	
+	// 点赞状态
+const isLiked = ref(false);
+
+// 添加点赞
+const addLike = () => {
+	const knowId = knowledgeDetail.value[0]?.id;
+	if (!knowId) return;
+	
+	uni.request({
+		url: `http://127.0.0.1:3006/know/addLike/${knowId}`,
+		method: 'POST',
+		success(res) {
+			console.log('点赞成功:', res.data);
+			if (res.data.status === 0) {
+				isLiked.value = !isLiked.value;
+				// 更新本地点赞数
+				const currentLikes = Number(knowledgeDetail.value[0]?.likes || 0);
+				knowledgeDetail.value[0].likes = isLiked.value ? currentLikes + 1 : currentLikes - 1;
+				uni.showToast({
+					title: isLiked.value ? '点赞成功' : '取消点赞',
+					icon: 'success'
+				});
+			}
+		},
+		fail(err) {
+			console.log('点赞失败:', err);
+			uni.showToast({
+				title: '操作失败',
+				icon: 'none'
+			});
+		}
+	});
+};
 </script>
 
 <style scoped lang="scss">
-    .app{
-		width:100vw;
-		height: 100%;
+	.container {
+		width: 100vw;
+		min-height: 100vh;
 		background-color: #f5f5f5;
+		padding-bottom: 80px;
 	}
-	.knowledgeDetail{
-		margin:0 20px;
-		padding: 10px;
-		border-radius: 25px;
+	
+	.post-card {
 		background-color: white;
-		color:#333;
+		padding: 15px;
+		margin-bottom: 10px;
 	}
-	.divider{
-		height: 0.5px;
-		background-color: #ddd;
-		margin: 20rpx 0;
-		width: 100%;
-	}
-	.hr{
-		height: 0.5px;
-		background-color: #ddd;
-		margin: 20rpx 0;
-		width: 100%;
-	}
-	.title{
-		margin:20px;
-		width:35px;
-		border-bottom: 3px solid greenyellow;
-	}
-	.comment{
-		margin:0 20px;
-		padding: 10px;
-		border-radius: 25px;
-		background-color: white;
-	}
-	.knowledgeDetail__time{
-		font-size:12px;
-		color:#666;
-	}
-	.comment__user{
+	
+	.user-info {
 		display: flex;
 		align-items: center;
-		gap:10px;
-		margin:5px;
-		image{
-			width: 50px;
-			height: 50px;
-			border-radius: 50%;
+		gap: 12px;
+		margin-bottom: 15px;
+	}
+	
+	.avatar {
+		width: 48px;
+		height: 48px;
+		border-radius: 50%;
+		overflow: hidden;
+		
+		image {
+			width: 100%;
+			height: 100%;
 		}
 	}
-	.comment__user-1{
+	
+	.user-details {
 		display: flex;
 		flex-direction: column;
+		gap: 4px;
 	}
-	.comment__user-nickname{
-		font-size:12px;
-		color:#666;
-	}
-	.comment__user-content{
-		color:#333;
-	}
-	.kong{
-		text-align: center;
-	}
-	.expertName{
-		font-size:15px;
-		color:#333;
+	
+	.user-name {
+		font-size: 15px;
 		font-weight: 600;
+		color: #333;
 	}
-	.knowledge_titie{
+	
+	.post-meta {
 		display: flex;
+		align-items: center;
+		gap: 8px;
 	}
-	.know__title-type{
-		width: 60px;
-		text-align: center;
-		font-size:12px;
-		border-radius: 25px;
+	
+	.post-time {
+		font-size: 12px;
+		color: #999;
+	}
+	
+	.post-type {
+		font-size: 11px;
+		padding: 3px 10px;
+		border-radius: 12px;
+		color: white;
+	}
+	
+	.post-type.green {
 		background-color: #3d6b3c;
-		color:white;
 	}
-	.know__title-title{
+	
+	.post-type.yellow {
+		background-color: #f0c040;
+	}
+	
+	.post-content {
+		margin-bottom: 20px;
+	}
+	
+	.post-title {
+		font-size: 18px;
 		font-weight: 600;
+		color: #333;
+		margin-bottom: 12px;
+		line-height: 1.3;
+	}
+	
+	.divider {
+		height: 1px;
+		background-color: #f0f0f0;
+		margin: 15px 0;
+		width: 100%;
+	}
+	
+	.post-body {
+		font-size: 14px;
+		color: #666;
+		line-height: 1.5;
+	}
+	
+	.post-image {
+		width: 100%;
+		height: 200px;
+		border-radius: 10px;
 		overflow: hidden;
-		text-overflow: ellipsis;
-		white-space: nowrap;
+		margin-top: 15px;
+		
+		image {
+			width: 100%;
+			height: 100%;
+		}
 	}
-	.yellow{
-		background-color: #666;
+	
+	.post-footer {
+		border-top: 1px solid #f0f0f0;
+		padding-top: 12px;
 	}
-	.green{
-		background-color: #3d6b3c;
+	
+	.post-actions {
+		display: flex;
+		align-items: center;
+		gap: 24px;
 	}
-    .input{
-		width:100vw;
+	
+	.action-item {
+		display: flex;
+		align-items: center;
+		gap: 6px;
+		font-size: 14px;
+		color: #999;
+	}
+	
+	.edit-actions {
+		position: absolute;
+		top: 15px;
+		right: 15px;
+		display: flex;
+		gap: 10px;
+	}
+	
+	.comments-section {
+		background-color: white;
+		padding: 15px;
+	}
+	
+	.section-title {
+		font-size: 16px;
+		font-weight: 600;
+		color: #333;
+		margin-bottom: 15px;
+	}
+	
+	.comment-item {
+		margin-bottom: 20px;
+		padding-bottom: 15px;
+		border-bottom: 1px solid #f0f0f0;
+	}
+	
+	.comment-item:last-child {
+		border-bottom: none;
+		margin-bottom: 0;
+		padding-bottom: 0;
+	}
+	
+	.comment-user {
+		display: flex;
+		align-items: flex-start;
+		gap: 10px;
+	}
+	
+	.comment-user.pending {
+		background-color: #fff8e1;
+		padding: 10px;
+		border-radius: 8px;
+		border: 1px dashed #ffc107;
+	}
+	
+	.comment-header {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+	}
+	
+	.pending-tag {
+		font-size: 11px;
+		padding: 2px 8px;
+		background-color: #ffc107;
+		color: #fff;
+		border-radius: 10px;
+		font-weight: 500;
+	}
+	
+	.comment-user-info {
+		display: flex;
+		flex-direction: column;
+		gap: 6px;
+		flex: 1;
+	}
+	
+	.comment-user-name {
+		font-size: 14px;
+		font-weight: 500;
+		color: #333;
+	}
+	
+	.comment-content {
+		font-size: 14px;
+		color: #666;
+		line-height: 1.4;
+	}
+	
+	.comment-time {
+		font-size: 12px;
+		color: #999;
+	}
+	
+	.comment-input-section {
 		position: fixed;
 		bottom: 0;
-		display: flex;
-		justify-content: space-around;
-		gap:10px;
-		padding:10px;
-		background-color: #3d6b3c;
-	}
-	.input__input{
+		left: 0;
+		right: 0;
 		background-color: white;
-		border-radius: 25px;
+		padding: 10px 15px;
+		border-top: 1px solid #f0f0f0;
 	}
-	.input__input-0{
-		height: 25px;
-		background-color: white;
-	}
-	.img-list {
+	
+	.comment-input {
 		display: flex;
-		flex-wrap: wrap;
+		align-items: center;
 		gap: 10px;
-		margin: 10px 0 0 0;
+	}
+	
+	.comment-input .avatar {
+		width: 36px;
+		height: 36px;
+	}
+	
+	.input-field {
+		flex: 1;
+		padding: 10px 15px;
+		background-color: #f5f5f5;
+		border-radius: 20px;
+		font-size: 14px;
+	}
+	
+	.send-btn {
+		padding: 8px 16px;
+		background-color: #3d6b3c;
+		color: white;
+		border-radius: 15px;
+		font-size: 14px;
+		border: none;
 	}
 </style>

@@ -74,6 +74,7 @@
 	  for (let i = 0; i < lists.length; i++) {
 	    try {
 	      const result = await uploadFilePromise(lists[i].url);
+	      console.log('afterRead - uploadFilePromise返回值:', result, '类型:', typeof result);
 	      let item = fileList.value[fileListLen];
 	      fileList.value.splice(fileListLen, 1, {
 	        ...item,
@@ -94,32 +95,51 @@
 	
 	// 更新表单中的图片字段
 	const updatePictureField = () => {
+	  console.log('updatePictureField - fileList:', JSON.stringify(fileList.value));
 	  const pictureUrls = fileList.value
 	    .filter(item => item.status === 'success')
-	    .map(item => item.url);
-	  form.value.picture = pictureUrls.join(','); // 多个图片用逗号分隔
+	    .map(item => {
+	      console.log('item.url:', item.url, '类型:', typeof item.url);
+	      return item.url;
+	    });
+	  console.log('pictureUrls数组:', pictureUrls);
+	  form.value.picture = pictureUrls.join(',');
+	  console.log('form.value.picture最终值:', form.value.picture);
 	};
 	
-	// 图片上传函数
+	// 图片上传函数 - 使用 uni.uploadFile（更兼容uni-app）
 	const uploadFilePromise = (url) => {
 	  return new Promise((resolve, reject) => {
-	    // 临时方案：直接使用本地文件URL，不上传到服务器
-	    // 如果你有后端上传接口，请取消注释下面的代码
-	    /*
 	    uni.uploadFile({
-	      url: 'http://127.0.0.1:3006/upload', // 修改为你的后端上传接口
+	      url: 'http://localhost:3006/upload',
 	      filePath: url,
-	      name: 'file',
-	      formData: {
-	        user: 'test',
-	      },
+	      name: 'image',  // 字段名必须是 image
 	      success: (res) => {
-	        console.log('上传成功:', res);
+	        console.log('上传响应原始数据:', res);
 	        try {
-	          const data = JSON.parse(res.data);
-	          resolve(data.data || data.url || res.data);
+	          const result = JSON.parse(res.data);
+	          console.log('上传结果:', JSON.stringify(result));
+	          
+	          // 后端返回结构: {status, message, data: {filename, url, ...}}
+	          if (result.data && result.data.filename) {
+	            const fullUrl = `http://localhost:3006/uploads/${result.data.filename}`;
+	            console.log('返回完整URL:', fullUrl);
+	            resolve(fullUrl);
+	          } else if (result.data && result.data.url) {
+	            // 如果后端返回了完整URL
+	            const fullUrl = result.data.url.startsWith('http') 
+	              ? result.data.url 
+	              : `http://localhost:3006${result.data.url}`;
+	            console.log('返回URL:', fullUrl);
+	            resolve(fullUrl);
+	          } else {
+	            console.error('无法获取图片URL:', result);
+	            reject(new Error('上传成功但无法获取图片URL'));
+	          }
 	        } catch (e) {
-	          resolve(res.data);
+	          console.error('JSON解析失败:', e);
+	          console.log('原始响应数据:', res.data);
+	          reject(new Error('响应数据不是有效JSON'));
 	        }
 	      },
 	      fail: (err) => {
@@ -131,11 +151,6 @@
 	        reject(err);
 	      }
 	    });
-	    */
-	    
-	    // 临时方案：直接返回本地文件URL
-	    console.log('使用本地文件URL:', url);
-	    resolve(url);
 	  });
 	};
 	
@@ -163,6 +178,7 @@
 			form.value.user_id = userinfo.id
 		}
 		form.value.created_at = dayjs().format('YYYY-MM-DD HH:mm:ss')
+		form.value.status = "pending"
 		console.log('提交内容', form.value)
 		console.log('开始发送请求...用户发帖')
 		uni.request({
@@ -183,7 +199,6 @@
 					});
 					setTimeout(() => {
 					    uni.navigateBack()
-						addPost()
 					  }, 2000);
 				} else {
 					console.log('操作失败:', res.data)
@@ -210,6 +225,7 @@
 			form.value.expert_id = userinfo.expert_id
 		}
 		form.value.created_at = dayjs().format('YYYY-MM-DD HH:mm:ss')
+		form.value.status = "pending"
 		console.log('提交内容', form.value)
 		// 添加请求前的日志
 		console.log('开始发送请求...')
@@ -231,7 +247,6 @@
 					});
 					setTimeout(() => {
 					    uni.navigateBack()
-						addKnowledge()
 					  }, 2000);
 				} else {
 					console.log('操作失败:', res.data)
@@ -288,7 +303,7 @@
 <style scoped>
 	.app{
 		width:100vw;
-		height: 100vh;
+		min-height: 100vh;
 		background-color: #f5f5f5;
 	}
 	.border{

@@ -1,86 +1,115 @@
 <template>
-	<NavBar :showBack="true"></NavBar>
-	<view class="app">
-		<view style="height: 30px;"></view>
-		<view v-for="item in expertDetail" class="detailShow">
-			<image :src="item.avatar" class="detailShow__avatar" style="width:75px;height: 75px;"></image>
-			<view class="detailShow__message-1">
-				<span style="font-size: 24px;font-weight: 600;">{{item.expertName}}</span>
-				<span >{{item.major}}</span>
-				<span style="color:aquamarine">蓝莓</span>
-			</view>
-			<view class="detailShow__message-2">
-				<span>{{item.degree}}</span>
-				<span>辽宁大学</span>
-			</view>
-			<view class="detailShow__message-3">
-				<p style="font-weight: 500;color:#666"><span style="font-size: 18px;font-weight: 600;color:#3d6b3c">擅长：</span>{{item.speciality}}</p>
+	<NavBar :showBack="true" title="专家详情"></NavBar>
+	<view class="container">
+		<!-- 专家信息卡片 -->
+		<view class="expert-card">
+			<view v-for="item in expertDetail" :key="item.id" class="expert-info">
+				<view class="avatar-container">
+					<image :src="item.avatar" class="expert-avatar" mode="aspectFill"></image>
+				</view>
+				
+				<view class="expert-details">
+					<view class="expert-name">{{item.expertName}}</view>
+					<view class="expert-meta">
+						<view class="expert-major">{{item.major}}</view>
+						<view class="expert-tag">蓝莓</view>
+					</view>
+					<view class="expert-education">
+						<view class="expert-degree">{{item.degree}}</view>
+						<view class="expert-school">辽宁大学</view>
+					</view>
+					<view class="expert-speciality">
+						<view class="speciality-label">擅长：</view>
+						<view class="speciality-content">{{item.speciality}}</view>
+					</view>
+				</view>
 			</view>
 		</view>
 		
+		<!-- 知识发布 -->
 		<Title title="知识发布" @more="toknowledgelist(expertDetail[0].id)"></Title>
-		<view class="knowledge" v-for="item in knowledge.slice(0, 2)" @click="toKnowledge(item.id)">
-			<view class="know__title">
-				<block v-if="item.type==='长文章'">
-					<view class="know__title-type green">{{item.type}}</view>
-				</block>
-				<block v-if="item.type==='小知识'">
-					<view class="know__title-type yellow">{{item.type}}</view>
-				</block>
-			   <view class="know__title-title">{{item.title}}</view>
+		<view class="knowledge-list">
+			<view class="knowledge-card" v-for="item in knowledge.slice(0, 2)" :key="item.id" @click="toKnowledge(item.id)">
+				<view class="post-header">
+					<block v-if="item.type==='长文章'">
+						<view class="post-type green">{{item.type}}</view>
+					</block>
+					<block v-if="item.type==='小知识'">
+						<view class="post-type yellow">{{item.type}}</view>
+					</block>
+				   <view class="post-title">{{item.title}}</view>
+				</view>
+				<view class="divider"></view>
+				<!-- 显示图片 -->
+				<view class="post-content">{{item.content}}</view>
+				<view class="post-images" v-if="item.picture && item.picture.length > 0">
+					<image 
+						v-for="(img, idx) in getImageList(item.picture)" 
+						:key="idx" 
+						:src="img" 
+						class="post-image" 
+						mode="aspectFill"
+					></image>
+				</view>
 			</view>
-			<view class="divider"></view>
-			<view class="know__content">{{item.content}}</view>
 		</view>
 		
+		<!-- 所获提问 -->
 		<Title title="所获提问" @more="toquestion(expertDetail[0].id)"></Title>
-		
-		<view class="item__container">
-			<view class="item" @click="topostDeatil" v-for="item in questionList">
-				<view class="item__title">
-					{{item.content}}
+		<view class="question-list">
+			<view class="question-card" v-for="item in questionList" :key="item.id" @click="topostDeatil">
+				<view class="question-content">{{item.content}}</view>
+				<!-- 显示问题图片 -->
+				<view class="question-images" v-if="item.picture && item.picture.length > 0">
+					<image 
+						v-for="(img, idx) in getImageList(item.picture)" 
+						:key="idx" 
+						:src="img" 
+						class="question-image" 
+						mode="aspectFill"
+					></image>
 				</view>
-				<view class="item__content">
+				<view class="answer-section">
 					<block v-if="item.answer">
-						专家回答：{{item.answer}}
+						<view class="answer-label">专家回答：</view>
+						<view class="answer-content">{{item.answer}}</view>
 					</block>
-					<block v-if="item.answer === null" style="display: flex;align-items: center;">
-						<view><up-icon name="info-circle"></up-icon></view>
-						<view>暂无回答</view>
-					</block>
+					<view v-if="item.answer === null" class="no-answer">
+						<up-icon name="info-circle" size="16" color="#999"></up-icon>
+						<text>暂无回答</text>
+					</view>
 				</view>
-				<view class="item__message">
-					<view>{{getLastTimeStr(item.created_at, true)}}</view>
-				</view>
+				<view class="question-time">{{getLastTimeStr(item.created_at, true)}}</view>
 			</view>
 		</view>
 		
-		<view class="bottom">
-			<view class="bottom_content" @click="showPhone = true">
-				<image src="/static/电话.png" mode="widthFix" style="width:50px;"></image>
+		<!-- 底部操作栏 -->
+		<view class="bottom-actions">
+			<view class="action-item" @click="showPhone = true">
+				<image src="/static/电话.png" mode="widthFix" style="width:24px;"></image>
+				<text>电话</text>
 			</view>
-			<view class="bottom_content">
-				<image src="/static/消息.png" mode="widthFix" style="width:50px;"></image>
+			<view class="action-item">
+				<image src="/static/消息.png" mode="widthFix" style="width:24px;"></image>
+				<text>消息</text>
 			</view>
-			<view class="bottom_content-1">
+			<view class="action-button">
 				<button @click="addQuestion(expertDetail[0].id)">有问题就沟通</button>
 			</view>
-			<!-- 浮窗 -->
 		</view>
-		<view style="height: 100px;"></view>
+		<view style="height: 80px;"></view>
 	</view>
 	
 	<up-popup :show="showPhone">
-		<view style="text-align: center;">
-		    <view>
-		        <text style="color:blue">{{expertDetail[0].phone}}</text>
-		    </view>
-		    <view>
+		<view class="phone-popup">
+		    <view class="popup-title">专家联系方式</view>
+		    <view class="phone-number">{{expertDetail[0].phone}}</view>
+		    <view class="copy-button">
 		    	<up-copy content="{{expertDetail[0].phone}}">
 		            <text>点我复制</text>
 		        </up-copy>
 		    </view>
-	        <view><up-icon name="close-circle" @click="showPhone = fasle"></up-icon></view>
+	        <view class="close-button"><up-icon name="close-circle" @click="showPhone = false"></up-icon></view>
 		</view>
 	</up-popup>
 	
@@ -161,6 +190,13 @@
 		})
 	}
 	const showPhone = ref(false)
+	
+	// 将图片字符串转换为数组
+	const getImageList = (pictureStr) => {
+		if (!pictureStr) return []
+		return pictureStr.split(',').filter(img => img.trim())
+	}
+	
 	//跳转到用户向专家提问页面
 	const addQuestion = (id) =>{
 		uni.navigateTo({
@@ -188,145 +224,341 @@
 </script>
 
 <style scoped lang="scss">
-	.app{
-		width:100vw;
-		height: 100%;
+	.container {
+		width: 100vw;
+		min-height: 100vh;
 		background-color: #f5f5f5;
+		padding-bottom: 80px;
 	}
-	.item__container{
-		display: flex;
-		flex-direction: column;
-		gap:10px;
-		margin:0 20px;
-	}
-	.item{
-		width:98%;
+	
+	.expert-card {
 		background-color: white;
-		margin: 10rpx;
-		display: flex;
-		flex-direction: column;
-		border-radius: 15rpx;
+		margin: 0 15px;
+		border-radius: 16px;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+		padding: 20px;
+		position: relative;
 	}
-	.item__title{
+	
+	.avatar-container {
+		position: absolute;
+		top: -40px;
+		left: 50%;
+		transform: translateX(-50%);
+		width: 80px;
+		height: 80px;
+		border-radius: 50%;
+		overflow: hidden;
+		border: 4px solid white;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+	}
+	
+	.expert-avatar {
+		width: 100%;
+		height: 100%;
+	}
+	
+	.expert-details {
+		text-align: center;
+		margin-top: 20px;
+	}
+	
+	.expert-name {
+		font-size: 20px;
 		font-weight: 600;
-		line-height: 25px;
-		margin:10px;
-		margin-left:20px;
-		
+		color: #333;
+		margin-bottom: 8px;
+	}
+	
+	.expert-meta {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		gap: 10px;
+		margin-bottom: 8px;
+	}
+	
+	.expert-major {
+		font-size: 14px;
+		color: #666;
+	}
+	
+	.expert-tag {
+		font-size: 12px;
+		padding: 2px 10px;
+		background-color: #e9f5e9;
+		color: #3d6b3c;
+		border-radius: 10px;
+	}
+	
+	.expert-education {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		gap: 10px;
+		margin-bottom: 12px;
+	}
+	
+	.expert-degree {
+		font-size: 14px;
+		color: #666;
+	}
+	
+	.expert-school {
+		font-size: 14px;
+		color: #666;
+	}
+	
+	.expert-speciality {
+		display: flex;
+		align-items: flex-start;
+		gap: 8px;
+		padding: 0 20px;
+	}
+	
+	.speciality-label {
+		font-size: 14px;
+		font-weight: 600;
+		color: #3d6b3c;
+		min-width: 40px;
+	}
+	
+	.speciality-content {
+		font-size: 14px;
+		color: #666;
+		flex: 1;
+		text-align: left;
+		line-height: 1.4;
+	}
+	
+	.knowledge-list {
+		padding: 0 15px;
+		margin-top: 20px;
+	}
+	
+	.knowledge-card {
+		background-color: white;
+		border-radius: 12px;
+		padding: 15px;
+		margin-bottom: 12px;
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+	}
+	
+	.post-header {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		margin-bottom: 10px;
+	}
+	
+	.post-type {
+		font-size: 11px;
+		padding: 3px 10px;
+		border-radius: 12px;
+		color: white;
+	}
+	
+	.post-type.green {
+		background-color: #3d6b3c;
+	}
+	
+	.post-type.yellow {
+		background-color: #f0c040;
+	}
+	
+	.post-title {
+		font-size: 16px;
+		font-weight: 600;
+		color: #333;
+		flex: 1;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+	
+	.divider {
+		height: 1px;
+		background-color: #f0f0f0;
+		margin: 10px 0;
+		width: 100%;
+	}
+	
+	.post-images {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px;
+		margin-bottom: 10px;
+	}
+	
+	.post-image {
+		width: calc(33.33% - 6px);
+		height: 80px;
+		border-radius: 8px;
+		overflow: hidden;
+	}
+	
+	.post-content {
+		font-size: 14px;
+		color: #666;
+		line-height: 1.4;
 		display: -webkit-box;
 		-webkit-box-orient: vertical;
 		overflow: hidden;
 		text-overflow: ellipsis;
 		-webkit-line-clamp: 3;
 	}
-	.item__content{
-		background-color: #f5f5f5;
-		border-radius: 15rpx;
-		padding: 10px;
-		margin:0 10px;
-		margin-left:20px;
-		color:#333;
+	
+	.question-list {
+		padding: 0 15px;
+		margin-top: 20px;
 	}
-	.item__message{
-		display: flex;
-		gap:10px;
-		margin:10px;
-		margin-left:20px;
-	}
-	.knowledge{
-		margin:0 20px;
-		padding:  10px 20px;
+	
+	.question-card {
 		background-color: white;
-		border-radius: 25px;
-		display: flex;
-		flex-direction: column;
-		margin-bottom:10px ;
+		border-radius: 12px;
+		padding: 15px;
+		margin-bottom: 12px;
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 	}
-	.divider{
-		height: 1px;
-		background-color: #666;
-		margin: 20rpx 0;
-		width: 100%;
-	}
-	.know__title{
-		display: flex;
-	}
-	.know__title-type{
-		width: 60px;
-		text-align: center;
-		font-size:13px;
-		border-radius: 25px;
-		background-color: #3d6b3c;
-		color:white;
-	}
-	.know__title-title{
-		font-weight: 600;
-		overflow: hidden;
-		text-overflow: ellipsis;
-		white-space: nowrap;
-	}
-	.yellow{
-		background-color: #666;
-	}
-	.know__content{
+	
+	.question-content {
+		font-size: 14px;
+		font-weight: 500;
+		color: #333;
+		line-height: 1.4;
+		margin-bottom: 10px;
 		display: -webkit-box;
 		-webkit-box-orient: vertical;
 		overflow: hidden;
 		text-overflow: ellipsis;
-		-webkit-line-clamp: 4;
+		-webkit-line-clamp: 3;
 	}
-	.detailShow{
-		position: relative;
-		margin:0 20px;
+	
+	.answer-section {
+		margin-bottom: 10px;
+	}
+	
+	.answer-label {
+		font-size: 13px;
+		font-weight: 500;
+		color: #3d6b3c;
+		margin-bottom: 5px;
+	}
+	
+	.answer-content {
+		font-size: 14px;
+		color: #666;
+		line-height: 1.4;
+		background-color: #f9f9f9;
 		padding: 10px;
-		background-color: white;
-		border-radius: 25px;
-		margin-top:50px;
-		padding-top:35px;
-		z-index: 0;
+		border-radius: 8px;
+		display: -webkit-box;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		-webkit-line-clamp: 3;
 	}
-	.detailShow__avatar{
-		position: absolute;
-		width:100px;
-		height: 100px;
-		top:-40px;
-		border-radius: 50%;
-		z-index: 0;
-	}
-	.detailShow__message-1{
-		display: flex;
-		gap:10px;
-		align-items: center;
-		padding:0 20px;
-	}
-	.detailShow__message-2{
-		display: flex;
-		gap:10px;
-		align-items: center;
-		padding:0 20px;
-	}
-	.detailShow__message-3{
-		padding:0 20px;
-	}
-	.bottom{
+	
+	.no-answer {
 		display: flex;
 		align-items: center;
-		gap:10px;
-		width:100vw;
+		gap: 6px;
+		font-size: 13px;
+		color: #999;
+		background-color: #f9f9f9;
+		padding: 10px;
+		border-radius: 8px;
+	}
+	
+	.question-images {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px;
+		margin: 10px 0;
+	}
+	
+	.question-image {
+		width: calc(33.33% - 6px);
+		height: 80px;
+		border-radius: 8px;
+		overflow: hidden;
+	}
+	
+	.question-time {
+		font-size: 12px;
+		color: #999;
+	}
+	
+	.bottom-actions {
 		position: fixed;
-		bottom:0;
-		background-color: #3d6b3c;
-		padding:10px;
-	}
-	.bottom_content{
-		width:55px;
-		height: 55px;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		display: flex;
+		align-items: center;
+		gap: 15px;
 		background-color: white;
-		border-radius: 15px;
+		padding: 10px 15px;
+		border-top: 1px solid #f0f0f0;
+		box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
 	}
-	.bottom_content-1{
-		width:90%;
-		margin:0 10px;
+	
+	.action-item {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 4px;
 	}
-
+	
+	.action-item text {
+		font-size: 12px;
+		color: #666;
+	}
+	
+	.action-button {
+		flex: 1;
+	}
+	
+	.action-button button {
+		width: 100%;
+		height: 40px;
+		background-color: #3d6b3c;
+		color: white;
+		border: none;
+		border-radius: 20px;
+		font-size: 14px;
+		font-weight: 500;
+	}
+	
+	.phone-popup {
+		background-color: white;
+		border-radius: 16px;
+		padding: 20px;
+		text-align: center;
+		position: relative;
+	}
+	
+	.popup-title {
+		font-size: 16px;
+		font-weight: 600;
+		color: #333;
+		margin-bottom: 15px;
+	}
+	
+	.phone-number {
+		font-size: 18px;
+		font-weight: 600;
+		color: #3d6b3c;
+		margin-bottom: 15px;
+	}
+	
+	.copy-button {
+		margin-bottom: 20px;
+	}
+	
+	.close-button {
+		position: absolute;
+		top: 10px;
+		right: 10px;
+	}
 </style>

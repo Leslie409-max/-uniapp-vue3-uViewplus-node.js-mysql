@@ -7,7 +7,7 @@
 	    		ref="form1"
 				labelAlign="left"
 	    >
-		    <up-form-item
+		    <!-- <up-form-item
 		    		label="头像:"
 		    		prop="avatar"
 		    		:borderBottom="true"
@@ -23,7 +23,7 @@
 						:maxCount="10"
 						:previewFullImage="true"
 					></up-upload>
-		    </up-form-item>
+		    </up-form-item> -->
 			
 	    	<up-form-item
 	    			label="姓名:"
@@ -137,12 +137,27 @@
 			</up-form-item>
 		</up-form>
 		
-		<button @click="addExpert">确定认证</button>
+		
+		<block v-if="!expertForm.status">
+		    <button @click="addExpert">确定认证</button>
+		</block>
+		<block v-if="expertForm.status === 'pending'">
+			<button>已提交认证，待审核</button>
+		</block>
+		<block v-if="expertForm.status === 'approved'">
+			<button>专家认证通过</button>
+		</block>
 	</view>
 </template>
 
 <script setup>
-	import {ref} from 'vue'
+	import {onMounted, ref} from 'vue'
+	import { userUserStore } from '../../../store/userStore';
+	
+	const userStore = userUserStore()
+	const userinfo = userStore.userInfo
+	console.log(userinfo.expert_id)
+	
 	const expertForm = ref({
 		avatar:'',
 		expertName:'',
@@ -239,28 +254,49 @@
 	};
 	
 	const addExpert = () =>{
+		// 添加用户ID和状态
+		const userinfo = uni.getStorageSync('userinfo') || {}
+		const submitData = {
+			...expertForm.value,
+			id: userinfo.id,
+			status: 'pending'
+		}
+		
 		uni.request({
-			url:`http://127.0.0.1:3006/expert/addExpert`,
+			url:`http://127.0.0.1:3007/expert/addExpert`,
 			method:'POST',
-		    data: expertForm.value,
+		    data: submitData,
 			success(res) {
 				console.log(res.data)
 				//弹出成功提示，跳转回上一个页面，并刷新
 				uni.showToast({
-					title: '认证成功，正在跳转首页...',
+					title: '认证成功，正在审核中...',
 					duration: 2000
 				});
-				setTimeout(() => {
-				    uni.switchTab({
-				    	url:'/pages/index/index'
-				    })
-				  }, 1000);
 			},
 			fail(err){
 				console.log(err)
 			}
 		})
 	}
+	const getExpertDetail = (id) =>{
+		uni.request({
+			url:`http://127.0.0.1:3006/expert/getExpertDetail/${id}`,
+			method:'GET',
+			success(res) {
+				console.log(res.data.data)
+				expertForm.value = res.data.data[0]
+			},
+			fail(err){
+				console.log(err)
+			}
+		})
+	}
+	
+	onMounted(()=>{
+		getExpertDetail(userinfo.expert_id)
+	})
+	
 		
 </script>
 
